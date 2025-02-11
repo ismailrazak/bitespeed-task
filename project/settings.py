@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-epp-eh$gha@ou9sj&b4oh-p(idz*b$2@8y%olsdq7*ctum*^7t
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = "api.Customer"
 
 # Application definition
 
