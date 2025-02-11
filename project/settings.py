@@ -12,22 +12,38 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+# deployment checklist
+DEBUG = config("DEBUG", cast=bool, default=False)
+SECRET_KEY = config("SECRET_KEY")
+SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", cast=bool, default=False)
+SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", default=2592000)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config(
+    "SECURE_HSTS_INCLUDE_SUBDOMAINS", cast=bool, default=True
+)
+SECURE_HSTS_PRELOAD = config("SECURE_HSTS_PRELOAD", cast=bool, default=True)
+SESSION_COOKIE_SECURE = config("SESSION_COOKIE_SECURE", cast=bool, default=True)
+CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE ", cast=bool, default=True)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-epp-eh$gha@ou9sj&b4oh-p(idz*b$2@8y%olsdq7*ctum*^7t"
+CSRF_TRUSTED_ORIGINS = [
+    "https://*",
+]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-ALLOWED_HOSTS = []
-
-
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,11 +54,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "api"
+    "api",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
