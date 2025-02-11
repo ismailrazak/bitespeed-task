@@ -15,6 +15,9 @@ class IdentifyView(APIView):
         email=request.data.get('email')
         phone_number =request.data.get('phone_number')
         contacts=Contact.objects.filter(Q(email=email)|Q(phone_number=phone_number)).order_by('created_at')
+        if contacts[0].linked_precedence=="secondary":
+            primary_contact = Contact.objects.get(id=contacts[0].linked_id)
+            contacts = Contact.objects.filter(Q(email=primary_contact.email)|Q(phone_number=primary_contact.phone_number)).order_by('created_at')
         emails=[]
         [emails.append(contact.email) for contact in contacts if contact.email not in emails]
         phone_numbers =[]
@@ -22,7 +25,7 @@ class IdentifyView(APIView):
         secondary_contact_ids = [contact.id for contact in contacts[1:]]
         data = 	{
 		"contact":{
-			"primaryContatctId": contacts[0].id,
+			"primaryContactId": contacts[0].id,
 			"emails": emails,
 			"phoneNumbers": phone_numbers,
 			"secondaryContactIds": secondary_contact_ids

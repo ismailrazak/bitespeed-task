@@ -5,7 +5,7 @@ from django.db import models
 
 class Contact(models.Model):
     email = models.EmailField(blank=True,null=True)
-    phone_number = models.IntegerField(blank=True,null=True)
+    phone_number = models.CharField(max_length=20)
     linked_id = models.IntegerField(blank=True,null=True)
     linked_precedence = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
