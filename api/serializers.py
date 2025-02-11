@@ -18,7 +18,7 @@ class ContactSerializer(serializers.ModelSerializer):
             email=validated_data.get("email")
             phone_number =validated_data.get("phone_number")
             contact = Contact.objects.filter(email=email,phone_number=phone_number)
-            primary_contacts = Contact.objects.filter(Q(email=email)| Q(phone_number=phone_number),linked_precedence="primary").order_by("created_at")
+            primary_contacts = Contact.objects.filter(Q(email=email)| Q(phone_number=phone_number)).order_by("created_at")
             if contact:
                 return contact
             elif primary_contacts:
@@ -29,6 +29,7 @@ class ContactSerializer(serializers.ModelSerializer):
                     contact.linked_precedence='secondary'
                     contact.save()
                 if primary_contacts.count()==1:
+                    print(primary_contacts)
                     secondary_contact=Contact.objects.create(linked_id = primary_contact.id,linked_precedence="secondary",**validated_data)
                     return secondary_contact
                 return primary_contact

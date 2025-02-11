@@ -12,3 +12,6 @@ class Contact(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(blank=True,null=True)
 
+    def __str__(self):
+        return self.email
+
