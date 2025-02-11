@@ -31,11 +31,9 @@ SESSION_COOKIE_SECURE = config("SESSION_COOKIE_SECURE", cast=bool, default=True)
 CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE ", cast=bool, default=True)
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://*",
+    "https://web-production-a6ff5.up.railway.app/*",
 ]
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = ["127.0.0.1", "web-production-a6ff5.up.railway.app"]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
