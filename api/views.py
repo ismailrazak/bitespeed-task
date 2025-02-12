@@ -69,5 +69,5 @@ class IdentifyView(APIView):
         else:
             primary_contact = serializer.data.get("linked_id")
 
-            unique_contact = Contact.objects.get(id=primary_contact.id)
+            unique_contact = Contact.objects.get(id=primary_contact)
             return _response_for_contact(unique_contact)
