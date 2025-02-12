@@ -52,10 +52,12 @@ class ContactSerializer(serializers.ModelSerializer):
                 primary_contacts = contacts.filter(linked_precedence="primary").exclude(
                     email=oldest_contact.email
                 )
-                for contact in primary_contacts:
-                    contact.linked_id = oldest_contact
-                    contact.linked_precedence = "secondary"
-                    contact.save()
+                if primary_contacts:
+                    for contact in primary_contacts:
+                        contact.linked_id = oldest_contact
+                        contact.linked_precedence = "secondary"
+                        contact.save()
+                    return oldest_contact
             else:
                 oldest_contact = oldest_contact.linked_id
             if email != "" and phone_number != "":
